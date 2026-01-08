@@ -11,12 +11,15 @@ testing-class.py
 venv/
 **/__pycache__/
 *.pyc
+*.egg-info/
 
 # JetBrains
 .idea/
 =======
 
-*.pyc
 /build/
 /dist/
 /custom-install-finalize.3dsx
+
+result
+result-*

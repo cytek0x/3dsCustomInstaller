@@ -2,7 +2,7 @@
 
 # This file is a part of custom-install.py.
 #
-# custom-install is copyright (c) 2019-2020 Ian Burgwin
+# custom-install is copyright (c) 2019 Ian Burgwin
 # This file is licensed under The MIT License (MIT).
 # You can find the full license text in LICENSE.md in the root of this project.
 
@@ -25,7 +25,8 @@ from pyctr.type.cdn import CDNError
 from pyctr.type.cia import CIAError
 from pyctr.type.tmd import TitleMetadataError
 
-from custominstall import CustomInstall, CI_VERSION, load_cifinish, InvalidCIFinishError, InstallStatus
+from . import __version__
+from .__main__ import CustomInstall, load_cifinish, InvalidCIFinishError, InstallStatus
 
 if TYPE_CHECKING:
     from os import PathLike
@@ -497,7 +498,7 @@ class CustomInstallGUI(ttk.Frame):
         self.status_label = ttk.Label(self, text='Waiting...')
         self.status_label.grid(row=5, column=0, sticky=tk.NSEW)
 
-        self.log(f'custom-install {CI_VERSION} - https://github.com/ihaveamac/custom-install', status=False)
+        self.log(f'custom-install {__version__} - https://github.com/ihaveamac/custom-install', status=False)
 
         if is_windows and not taskbar:
             self.log('Note: Could not load taskbar lib.')
@@ -735,8 +736,13 @@ class CustomInstallGUI(ttk.Frame):
         Thread(target=install).start()
 
 
-window = tk.Tk()
-window.title(f'custom-install {CI_VERSION}')
-frame = CustomInstallGUI(window)
-frame.pack(fill=tk.BOTH, expand=True)
-window.mainloop()
+def main():
+    window = tk.Tk()
+    window.title(f'custom-install {__version__}')
+    frame = CustomInstallGUI(window)
+    frame.pack(fill=tk.BOTH, expand=True)
+    window.mainloop()
+
+
+if __name__ == '__main__':
+    main()

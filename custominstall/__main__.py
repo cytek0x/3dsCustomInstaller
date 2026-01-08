@@ -2,7 +2,7 @@
 
 # This file is a part of custom-install.py.
 #
-# custom-install is copyright (c) 2019-2020 Ian Burgwin
+# custom-install is copyright (c) 2019 Ian Burgwin
 # This file is licensed under The MIT License (MIT).
 # You can find the full license text in LICENSE.md in the root of this project.
 
@@ -10,7 +10,7 @@ from argparse import ArgumentParser
 from enum import Enum
 from glob import glob
 import gzip
-from os import makedirs, rename, scandir
+from os import makedirs, rename, scandir, environ
 from os.path import dirname, join, isdir, isfile
 from random import randint
 from hashlib import sha256
@@ -36,6 +36,8 @@ from pyctr.type.ncch import NCCHSection
 from pyctr.type.tmd import TitleMetadataError
 from pyctr.util import roundup
 
+from . import __version__
+
 if platform == 'msys':
     platform = 'win32'
 
@@ -46,15 +48,21 @@ if is_windows:
 else:
     from os import statvfs
 
-CI_VERSION = '2.1'
-
 # used to run the save3ds_fuse binary next to the script
-frozen = getattr(sys, 'frozen', False)
-script_dir: str
-if frozen:
-    script_dir = dirname(executable)
+if 'CUSTOM_INSTALL_SAVE3DS_PATH' in environ:
+    save3ds_fuse_path = environ['CUSTOM_INSTALL_SAVE3DS_PATH']
 else:
-    script_dir = dirname(__file__)
+    save3ds_fuse_name = 'save3ds_fuse'
+    if is_windows:
+        save3ds_fuse_name += '.exe'
+    frozen = getattr(sys, 'frozen', False)
+    script_dir: str
+    if frozen:
+        script_dir = dirname(executable)
+        save3ds_fuse_path = join(script_dir, 'bin', save3ds_fuse_name)
+    else:
+        script_dir = dirname(__file__)
+        save3ds_fuse_path = join(script_dir, 'bin', platform, save3ds_fuse_name)
 
 # missing contents are replaced with 0xFFFFFFFF in the cmd file
 CMD_MISSING = b'\xff\xff\xff\xff'
@@ -281,12 +289,6 @@ class CustomInstall:
         return isdir(sd_path)
 
     def start(self):
-        if frozen:
-            save3ds_fuse_path = join(script_dir, 'bin', 'save3ds_fuse')
-        else:
-            save3ds_fuse_path = join(script_dir, 'bin', platform, 'save3ds_fuse')
-        if is_windows:
-            save3ds_fuse_path += '.exe'
         if not isfile(save3ds_fuse_path):
             self.log("Couldn't find " + save3ds_fuse_path, 2)
             return None, False, 0
@@ -692,7 +694,7 @@ class CustomInstall:
         return msg_with_type
 
 
-if __name__ == "__main__":
+def main():
     parser = ArgumentParser(description='Install a CIA to the SD card for a Nintendo 3DS system.')
     parser.add_argument('cia', help='CIA files', nargs='+')
     parser.add_argument('-m', '--movable', help='movable.sed file', required=True)
@@ -703,7 +705,7 @@ if __name__ == "__main__":
     parser.add_argument('--overwrite-saves', help='overwrite existing save files', action='store_true')
     parser.add_argument('--cifinish-out', help='path for cifinish.bin file, defaults to (SD root)/cifinish.bin')
 
-    print(f'custom-install {CI_VERSION} - https://github.com/ihaveamac/custom-install')
+    print(f'custom-install {__version__} - https://github.com/ihaveamac/custom-install')
     args = parser.parse_args()
 
     installer = CustomInstall(boot9=args.boot9,
@@ -751,3 +753,7 @@ if __name__ == "__main__":
         installer.log(f'\n\nWarning: {application_count} installed applications were detected.\n'
                       f'The HOME Menu will only show 300 icons.\n'
                       f'Some applications (not updates or DLC) will need to be deleted.')
+
+
+if __name__ == "__main__":
+    main()
