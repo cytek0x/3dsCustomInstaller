@@ -1,0 +1,2 @@
+recursive-include custominstall/bin/*
+include custominstall/title.db.gz

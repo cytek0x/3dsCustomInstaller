@@ -48,6 +48,12 @@ if is_windows:
 else:
     from os import statvfs
 
+script_dir: str
+if frozen:
+    script_dir = dirname(executable)
+else:
+    script_dir = dirname(__file__)
+
 # used to run the save3ds_fuse binary next to the script
 if 'CUSTOM_INSTALL_SAVE3DS_PATH' in environ:
     save3ds_fuse_path = environ['CUSTOM_INSTALL_SAVE3DS_PATH']
@@ -56,12 +62,9 @@ else:
     if is_windows:
         save3ds_fuse_name += '.exe'
     frozen = getattr(sys, 'frozen', False)
-    script_dir: str
     if frozen:
-        script_dir = dirname(executable)
         save3ds_fuse_path = join(script_dir, 'bin', save3ds_fuse_name)
     else:
-        script_dir = dirname(__file__)
         save3ds_fuse_path = join(script_dir, 'bin', platform, save3ds_fuse_name)
 
     if not isfile(save3ds_fuse_path):

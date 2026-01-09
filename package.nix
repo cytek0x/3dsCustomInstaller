@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  python,
   callPackage,
   buildPythonApplication,
   fetchPypi,
@@ -58,8 +59,9 @@ buildPythonApplication rec {
 
   makeWrapperArgs = [ "--set CUSTOM_INSTALL_SAVE3DS_PATH ${save3ds_no_fuse}/bin/save3ds_fuse" ];
 
-  preFixup = lib.optionalString (!withGUI) ''
-    rm $out/bin/custominstall-gui
+  preFixup = ''
+    rm -r $out/lib/${python.libPrefix}/site-packages/custominstall/bin
+    ${lib.optionalString (!withGUI) "rm $out/bin/custominstall-gui"}
   '';
 
   meta = with lib; {
