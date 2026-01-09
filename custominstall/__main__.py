@@ -49,6 +49,7 @@ else:
     from os import statvfs
 
 script_dir: str
+frozen = getattr(sys, 'frozen', False)
 if frozen:
     script_dir = dirname(executable)
 else:
@@ -61,7 +62,6 @@ else:
     save3ds_fuse_name = 'save3ds_fuse'
     if is_windows:
         save3ds_fuse_name += '.exe'
-    frozen = getattr(sys, 'frozen', False)
     if frozen:
         save3ds_fuse_path = join(script_dir, 'bin', save3ds_fuse_name)
     else:
