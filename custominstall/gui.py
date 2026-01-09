@@ -26,7 +26,7 @@ from pyctr.type.cia import CIAError
 from pyctr.type.tmd import TitleMetadataError
 
 from . import __version__
-from .__main__ import CustomInstall, load_cifinish, InvalidCIFinishError, InstallStatus
+from .__main__ import CustomInstall, load_cifinish, InvalidCIFinishError, InstallStatus, save3ds_fuse_path
 
 if TYPE_CHECKING:
     from os import PathLike
@@ -739,6 +739,10 @@ class CustomInstallGUI(ttk.Frame):
 
 
 def main():
+    if not (save3ds_fuse_path and isfile(save3ds_fuse_path)):
+        mb.showerror('Error', "Couldn't find save3ds_fuse. Please place it PATH.")
+        return
+
     window = tk.Tk()
     window.title(f'custom-install {__version__}')
     frame = CustomInstallGUI(window)

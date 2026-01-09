@@ -15,7 +15,7 @@ from os.path import dirname, join, isdir, isfile
 from random import randint
 from hashlib import sha256
 from pprint import pformat
-from shutil import copyfile, copy2, rmtree
+from shutil import copyfile, copy2, rmtree, which
 import sys
 from sys import platform, executable
 from tempfile import TemporaryDirectory
@@ -63,6 +63,9 @@ else:
     else:
         script_dir = dirname(__file__)
         save3ds_fuse_path = join(script_dir, 'bin', platform, save3ds_fuse_name)
+
+    if not isfile(save3ds_fuse_path):
+        save3ds_fuse_path = which('save3ds_fuse')
 
 # missing contents are replaced with 0xFFFFFFFF in the cmd file
 CMD_MISSING = b'\xff\xff\xff\xff'
@@ -289,7 +292,7 @@ class CustomInstall:
         return isdir(sd_path)
 
     def start(self):
-        if not isfile(save3ds_fuse_path):
+        if not (save3ds_fuse_path and isfile(save3ds_fuse_path)):
             self.log("Couldn't find " + save3ds_fuse_path, 2)
             return None, False, 0
 
