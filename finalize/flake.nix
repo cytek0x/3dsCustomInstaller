@@ -11,6 +11,7 @@
     devShells.x86_64-linux = rec {
       custom-install-finalize = pkgs.mkShell.override { stdenv = pkgs.devkitNix.stdenvARM; } {};
       cif = custom-install-finalize;
+      default = custom-install-finalize;
     };
 
     packages.x86_64-linux = rec {
@@ -26,6 +27,7 @@
         '';
       };
       cif = custom-install-finalize;
+      default = custom-install-finalize;
     };
   };
 }
