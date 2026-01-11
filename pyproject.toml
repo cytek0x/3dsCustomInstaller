@@ -45,4 +45,4 @@ find = {namespaces = false}
 
 # is it even possible to make these OS-specific with pyproject.toml?
 [tool.setuptools.package-data]
-custominstall = ["bin/darwin/save3ds_fuse", "bin/win32/save3ds_fuse.exe"]
+custominstall = ["bin/darwin/save3ds_fuse", "bin/win32/save3ds_fuse.exe", "TaskbarLib.tlb", "title.db.gz"]
