@@ -230,8 +230,12 @@ class InstallResults(tk.Toplevel):
         else:
             message = 'Nothing was installed.'
 
-        if install_state['installed'] and copied_3dsx:
-            message += '\n\ncustom-install-finalize has been copied to the SD card.'
+        if install_state['installed']:
+            if copied_3dsx:
+                message += '\n\ncustom-install-finalize has been copied to the SD card.'
+            else:
+                message += ('\n\nNote: custom-install-finalize was not copied.\n'
+                            'You can either manually copy the 3dsx to your SD card, or use GodMode9 to finish the install.')
 
         if application_count >= 300:
             message += (f'\n\nWarning: {application_count} installed applications were detected.\n'
@@ -600,6 +604,8 @@ class CustomInstallGUI(ttk.Frame):
 
             if status:
                 self.status_label.config(text=line)
+
+            print(log_msg)
 
     def show_error(self, message):
         mb.showerror('Error', message, parent=self.parent)
