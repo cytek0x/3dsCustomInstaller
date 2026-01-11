@@ -7,6 +7,8 @@
     pyctr.inputs.nixpkgs.follows = "nixpkgs";
     hax-nur.url = "github:ihaveamac/nur-packages/master";
     hax-nur.inputs.nixpkgs.follows = "nixpkgs";
+    finalize.url = "path:finalize";
+    finalize.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -15,6 +17,7 @@
       nixpkgs,
       pyctr,
       hax-nur,
+      finalize,
     }:
     let
       systems = [
@@ -43,5 +46,24 @@
       packages = forAllSystems (
         system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system}
       );
+
+      apps = {
+        # this only works on x86_64-linux due to devkitNix only working there
+        x86_64-linux =
+          let
+            system = "x86_64-linux";
+            pkgs = import nixpkgs { inherit system; };
+          in
+          {
+            update-finalize = {
+              type = "app";
+              program = (pkgs.writeShellScript "update-finalize" ''
+                set -x
+                finalize=${inputs.finalize.packages.${system}.custom-install-finalize}/custom-install-finalize.3dsx
+                cp --no-preserve=mode,ownership,timestamps $finalize custominstall/custom-install-finalize.3dsx
+              '').outPath;
+            };
+          };
+      };
     };
 }

@@ -1,5 +1,63 @@
 {
   "nodes": {
+    "devkitNix": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "finalize",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1766539742,
+        "narHash": "sha256-F6OeM2LrLo2n+Xg5XU4udQR/vuWWrDMKxXRzNXE2ClQ=",
+        "owner": "bandithedoge",
+        "repo": "devkitNix",
+        "rev": "c97f9880737716085e78009cba6bf85ad104628b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bandithedoge",
+        "repo": "devkitNix",
+        "type": "github"
+      }
+    },
+    "finalize": {
+      "inputs": {
+        "devkitNix": "devkitNix",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-qQn272f8Z4QhQV2reyd9v0GtypYgnTrOqEiewWnSGJY=",
+        "path": "finalize",
+        "type": "path"
+      },
+      "original": {
+        "path": "finalize",
+        "type": "path"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "hax-nur": {
       "inputs": {
         "nixpkgs": [
@@ -61,9 +119,25 @@
     },
     "root": {
       "inputs": {
+        "finalize": "finalize",
         "hax-nur": "hax-nur",
         "nixpkgs": "nixpkgs",
         "pyctr": "pyctr"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
       }
     },
     "treefmt-nix": {
