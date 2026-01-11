@@ -2,6 +2,7 @@
 bin/linux/save3ds_fuse
 cstins/
 testing-class.py
+*.local
 
 # macOS
 .DS_Store
@@ -12,6 +13,7 @@ venv/
 **/__pycache__/
 *.pyc
 *.egg-info/
+*.whl
 
 # JetBrains
 .idea/
