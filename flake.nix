@@ -47,23 +47,34 @@
         system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system}
       );
 
-      apps = {
-        # this only works on x86_64-linux due to devkitNix only working there
-        x86_64-linux =
-          let
-            system = "x86_64-linux";
-            pkgs = import nixpkgs { inherit system; };
-          in
-          {
-            update-finalize = {
-              type = "app";
-              program = (pkgs.writeShellScript "update-finalize" ''
-                set -x
-                finalize=${inputs.finalize.packages.${system}.custom-install-finalize}/custom-install-finalize.3dsx
-                cp --no-preserve=mode,ownership,timestamps $finalize custominstall/custom-install-finalize.3dsx
-              '').outPath;
-            };
+      apps = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          gui = {
+            type = "app";
+            program = "${self.packages.${system}.custominstall}/bin/custominstall-gui";
           };
-      };
+        }
+        // (
+          if system == "x86_64-linux" then
+            # this only works on x86_64-linux due to devkitNix only working there
+            {
+              update-finalize = {
+                type = "app";
+                program =
+                  (pkgs.writeShellScript "update-finalize" ''
+                    set -x
+                    finalize=${inputs.finalize.packages.${system}.custom-install-finalize}/custom-install-finalize.3dsx
+                    cp --no-preserve=mode,ownership,timestamps $finalize custominstall/custom-install-finalize.3dsx
+                  '').outPath;
+              };
+            }
+          else
+            { }
+        )
+      );
     };
 }
