@@ -294,11 +294,11 @@ void finalize_install(void)
 
 		ticket_buf.title_id_be = __builtin_bswap64(entries[i].title_id);
 
-		res = AM_InstallTicketBegin(&ticketHandle);
+		res = AMNET_InstallTicketBegin(&ticketHandle);
 		if (R_FAILED(res))
 		{
 			printf("Failed to begin ticket install: %08lx\n", res);
-			AM_InstallTicketAbort(ticketHandle);
+			AMNET_InstallTicketAbort(ticketHandle);
 			goto exit;
 		}
 
@@ -306,15 +306,15 @@ void finalize_install(void)
 		if (R_FAILED(res))
 		{
 			printf("Failed to write ticket: %08lx\n", res);
-			AM_InstallTicketAbort(ticketHandle);
+			AMNET_InstallTicketAbort(ticketHandle);
 			goto exit;
 		}
 
-		res = AM_InstallTicketFinish(ticketHandle);
+		res = AMNET_InstallTicketFinish(ticketHandle);
 		if (R_FAILED(res))
 		{
 			printf("Failed to finish ticket install: %08lx\n", res);
-			AM_InstallTicketAbort(ticketHandle);
+			AMNET_InstallTicketAbort(ticketHandle);
 			goto exit;
 		}
 
