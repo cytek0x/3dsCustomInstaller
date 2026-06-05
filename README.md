@@ -1,5 +1,3 @@
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)]() ![Releases](https://img.shields.io/github/downloads/ihaveamac/custom-install/total.svg)
-
 # custom-install
 Installs a title directly to an SD card for the Nintendo 3DS. Originally created late June 2019.
 
@@ -7,7 +5,7 @@ Installs a title directly to an SD card for the Nintendo 3DS. Originally created
 
 ### Windows standalone
 
-1. [Dump boot9.bin and movable.sed](https://ihaveamac.github.io/dump.html) from a 3DS system.
+1. [Dump boot9.bin and movable.sed](https://wiki.hacks.guide/wiki/3DS:Dump_system_files) from a 3DS system.
 2. Download the [latest releases](https://github.com/ihaveamac/custom-install/releases).
 3. Extract and run ci-gui. Read `windows-quickstart.txt`.
 
@@ -74,8 +72,9 @@ A GUI is provided to make the process easier.
 
 ### GUI Setup
 Linux users may need to install a Tk package:
-- Ubuntu/Debian: `sudo apt install python3-tk`
-- Arch: `sudo pacman -S tk`
+* Ubuntu/Debian: `sudo apt install python3-tk`
+* Arch: `sudo pacman -S tk`
+* Fedora: `sudo dnf install python3-tkinter`
 
 ## Development
 
