@@ -1,5 +1,6 @@
 The MIT License (MIT)
 
+Copyright (c) 2026 Cytek0x
 Copyright (c) 2019 Ian Burgwin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

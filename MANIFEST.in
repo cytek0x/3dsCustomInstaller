@@ -1,4 +1,0 @@
-recursive-include custominstall/bin/*
-include custominstall/title.db.gz
-include custominstall/TaskbarLib.tlb
-include custominstall/custom-install-finalize.3dsx

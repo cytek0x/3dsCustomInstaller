@@ -62,8 +62,9 @@ else:
     save3ds_fuse_name = 'save3ds_fuse'
     if is_windows:
         save3ds_fuse_name += '.exe'
+        
     if frozen:
-        save3ds_fuse_path = join(script_dir, 'bin', save3ds_fuse_name)
+        save3ds_fuse_path = join(script_dir, 'custominstall', 'bin', platform, save3ds_fuse_name)
     else:
         save3ds_fuse_path = join(script_dir, 'bin', platform, save3ds_fuse_name)
 
@@ -296,7 +297,7 @@ class CustomInstall:
 
     def start(self):
         if not (save3ds_fuse_path and isfile(save3ds_fuse_path)):
-            self.log("Couldn't find " + save3ds_fuse_path, 2)
+            self.log(f"Couldn't find {save3ds_fuse_path}", 2)
             return None, False, 0
 
         crypto = self.crypto

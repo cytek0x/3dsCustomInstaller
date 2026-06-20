@@ -1,93 +1,71 @@
-# custom-install
-Installs a title directly to an SD card for the Nintendo 3DS. Originally created late June 2019.
+# 3DS Custom Install - Modern GUI
 
-## Summary
+Installs a title (`.cia`) directly to an SD card for the Nintendo 3DS. 
+This is a modernized fork of the original `custom-install` project, featuring a completely redesigned graphical interface, real-time logging, and robust error handling.
 
-### Windows standalone
+## ✨ New features in this version
 
-1. [Dump boot9.bin and movable.sed](https://wiki.hacks.guide/wiki/3DS:Dump_system_files) from a 3DS system.
-2. Download the [latest releases](https://github.com/ihaveamac/custom-install/releases).
-3. Extract and run ci-gui. Read `windows-quickstart.txt`.
+* **Modern Interface:** A sleek, responsive dark-mode GUI built with CustomTkinter.
+* **Smart Error Handling:** Automatically detects missing keys (`MissingSeedError`) for newer games, skipping them safely without crashing the entire installation process.
+* **Real-Time Logging:** Built-in console viewer to monitor the injection process step-by-step.
+* **Offline Database:** Automatically fetches and caches the 3DS Title Database for offline identification of installed apps.
+* **Multi-Language:** Native support for English and Spanish.
+* **Standalone Executable:** No need to install Python. Just download, extract, and run.
 
-### With installed Python
+---
 
-> [!NOTE]
-> Windows users: Enabling "Add Python 3.X to PATH" is **NOT** required! Python is installed with the `py` launcher by default.
+## 🚀 Quickstart (Windows Standalone)
 
-1. [Dump boot9.bin and movable.sed](https://ihaveamac.github.io/dump.html) from a 3DS system.
-2. Install the packages:
-  * Windows: `py -3 -m pip install --user --upgrade https://github.com/ihaveamac/custom-install/archive/refs/heads/python-package.zip`
-  * macOS/Linux: `python3 -m pip install --user --upgrade https://github.com/ihaveamac/custom-install/archive/refs/heads/python-package.zip`
+You do **NOT** need to install Python to use this tool if you are on Windows.
 
-To run the GUI:
-* Windows: `py -3 -m custominstall.gui`
-* macOS/Linux: `python3 -m custominstall.gui`
+1. [Dump your `boot9.bin` and `movable.sed`](https://wiki.hacks.guide/wiki/3DS:Dump_system_files) from your 3DS system.
+2. Download the latest `.zip` release from the **Releases** tab.
+3. Extract the folder to your PC.
+4. Run `3DS Custom Installer.exe`.
+5. Select your SD card, your system files, and the `.cia` files you want to install.
 
-To run the command line version:
-* Windows: `py -3 -m custominstall`
-* macOS/Linux: `python3 -m custominstall`
+### System Files Required:
+* **`movable.sed`**: Required to encrypt the files for your specific console.
+* **`boot9.bin`**: Required for crypto operations.
+* **`seeddb.bin`** *(Optional but recommended)*: Needed for newer games (2015+) and updates that use seeds. If missing, the program will skip these specific games but will continue installing classic base games.
 
-## Setup
-Linux users must build [wwylele/save3ds](https://github.com/wwylele/save3ds) and place `save3ds_fuse` in one of these places:
-* A directory in `PATH`
-* In `custominstall/bin/linux`
-* Set the environment variable `CUSTOM_INSTALL_SAVE3DS_PATH` to the `save3ds_fuse` binary
+## 🏁 Final step (Crucial)
+After the PC installation is complete, the program will place a tool called `custom-install-finalize.3dsx` in your SD card's `3ds` folder.
+**You must run `custom-install-finalize` through the Homebrew Launcher on your 3DS** to install the necessary tickets and make the games appear on your HOME Menu.
 
-movable.sed is required and can be provided with `-m` or `--movable`.
+---
 
-boot9 is needed:
-* `-b` or `--boot9` argument (if set)
-* `BOOT9_PATH` environment variable (if set)
-* `%APPDATA%\3ds\boot9.bin` (Windows-specific)
-* `~/Library/Application Support/3ds/boot9.bin` (macOS-specific)
-* `~/.3ds/boot9.bin`
-* `~/3ds/boot9.bin`
+## 💻 For developers (Running from source)
 
-A [SeedDB](https://github.com/ihaveamac/3DS-rom-tools/wiki/SeedDB-list) is needed for newer games (2015+) that use seeds.  
-SeedDB is checked in order of:
-* `-s` or `--seeddb` argument (if set)
-* `SEEDDB_PATH` environment variable (if set)
-* `%APPDATA%\3ds\seeddb.bin` (Windows-specific)
-* `~/Library/Application Support/3ds/seeddb.bin` (macOS-specific)
-* `~/.3ds/seeddb.bin`
-* `~/3ds/seeddb.bin`
+If you want to modify the source code or run it on macOS/Linux, you will need Python installed.
 
-## custom-install-finalize
-custom-install-finalize installs a ticket, plus a seed if required. This is required for the title to appear and function.
-
-This can be built as most 3DS homebrew projects [with devkitARM](https://www.3dbrew.org/wiki/Setting_up_Development_Environment).
-
-## Usage
-Use `-h` to view arguments.
-
-Examples:
+### Setup
+1. Clone this repository.
+2. Install the required Python packages:
+```bash
+   pip install customtkinter Pillow pyctr
 ```
-py -3 -m custominstall -b boot9.bin -m movable.sed --sd E:\ file.cia file2.cia
-python3 -m custominstall -b boot9.bin -m movable.sed --sd /Volumes/GM9SD file.cia file2.cia
-python3 -m custominstall -b boot9.bin -m movable.sed --sd /media/GM9SD file.cia file2.cia
+3. Run the GUI:
+```bash
+python gui_ctk.py
 ```
 
-## GUI
-A GUI is provided to make the process easier.
+### Building the Windows Standalone (.exe)
+To compile your own executable using PyInstaller, use the following command to avoid pathing issues with the internal libraries:
 
-### GUI Setup
-Linux users may need to install a Tk package:
-* Ubuntu/Debian: `sudo apt install python3-tk`
-* Arch: `sudo pacman -S tk`
-* Fedora: `sudo dnf install python3-tkinter`
+```bash
+pyinstaller --noconsole --onedir --windowed --icon=icon.ico gui_ctk.py
+```
+*Note: After building, make sure to manually copy the `custominstall` folder and the `icon.ico` file into the generated `dist/gui_ctk/` directory.*
 
-## Development
+---
 
-### Building Windows standalone
+## 📜 License & Credits
 
-> [!WARNING]
-> This section is OUTDATED and currently does not work with the Python package setup.
-
-## License/Credits
-[save3ds by wwylele](https://github.com/wwylele/save3ds) is used to interact with the Title Database (details in `bin/README`).
-
-Thanks to @nek0bit for redesigning `custominstall.py` to work as a module, and for implementing an earlier GUI.
-
-Thanks to @LyfeOnEdge from the [brewtools Discord](https://brewtools.dev) for designing the second version of the GUI. Special thanks to CrafterPika and archbox for testing.
-
-Thanks to @BpyH64 for [researching how to generate the cmacs](https://github.com/d0k3/GodMode9/issues/340#issuecomment-487916606).
+* **Modern GUI & Backend Rework** by [Cytek0x](https://github.com/Cytek0x).
+* **Core Logic & Original CLI** by [ihaveamac](https://github.com/ihaveamac/custom-install).
+* **[save3ds](https://github.com/wwylele/save3ds)** by wwylele (used to interact with the Title Database).
+* Thanks to @nek0bit for redesigning the original `custominstall.py` to work as a module.
+* Thanks to @LyfeOnEdge for the second version of the classic GUI. Special thanks to CrafterPika and archbox for testing.
+* Thanks to @BpyH64 for researching how to generate the cmacs.
+* Interface Icons provided by [Icons8](https://icons8.com).

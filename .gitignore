@@ -3,25 +3,23 @@ bin/linux/save3ds_fuse
 cstins/
 testing-class.py
 *.local
-
-# macOS
 .DS_Store
 ._*
-
-# Python
 venv/
 **/__pycache__/
 *.pyc
 *.egg-info/
 *.whl
-
-# JetBrains
 .idea/
 =======
-
 /build/
 /dist/
 /custom-install-finalize.3dsx
-
 result
 result-*
+venv/
+__pycache__/
+build/
+dist/
+*.spec
+titledb_offline.json
