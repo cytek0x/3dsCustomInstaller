@@ -69,3 +69,5 @@ pyinstaller --noconsole --onedir --windowed --icon=icon.ico gui_ctk.py
 * Thanks to @LyfeOnEdge for the second version of the classic GUI. Special thanks to CrafterPika and archbox for testing.
 * Thanks to @BpyH64 for researching how to generate the cmacs.
 * Interface Icons provided by [Icons8](https://icons8.com).
+
+<img width="1155" height="788" alt="Image" src="https://github.com/user-attachments/assets/a8b7de97-21da-410d-be7e-4e885e7e816c" />
